@@ -19,9 +19,7 @@ class Board
   attr_accessor :moves, :p1, :p2
 
   def initialize
-    self.moves = Array.new(9, 0)
-    self.p1 = Player.new('X', self)
-    self.p2 = Player.new('O', self)
+    setup
   end
 
   def to_s
@@ -42,11 +40,27 @@ class Board
       posn = p1.ask
       moves[posn - 1] = p1.sym
       puts self
-      break if p1.win? || p2.win?
+      break puts "!!! #{p1.sym} won." if p1.win?
+      break puts "!!! #{p2.sym} won." if p2.win? 
+    end
+    play_again?
+  end
+
+  def play_again?
+    p 'Do you want to play again? (Y/N): '
+    if gets.chomp.upcase == 'Y'
+      setup
+      play
     end
   end
 
   private
+  def setup
+    self.moves = Array.new(9, 0)
+    self.p1 = Player.new('X', self)
+    self.p2 = Player.new('O', self)
+  end 
+
   def display_start
     for i in (1..9)
       if (i % 3).zero?
@@ -85,7 +99,8 @@ class Player
   end
 
   def win?
-    WINNING.filter { |winning| winning - positions != [] }.length < 8
+    WINNING.each { |winning| return true if winning - positions == [] }
+    false
   end
 
   private 
