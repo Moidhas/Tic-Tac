@@ -37,10 +37,8 @@ class Board
   def play
     display_start
     loop do
-      round(p1)
-      break puts "!!! #{p1.sym} won." if p1.win?
-      round(p2)
-      break puts "!!! #{p2.sym} won." if p2.win? 
+      break if round(p1)
+      break if round(p2)
     end
     play_again?
   end
@@ -51,6 +49,14 @@ class Board
     posn = player.ask
     moves[posn - 1] = player.sym
     puts self
+    if player.win?
+      puts "!!! #{player.sym} won."
+      return true
+    elsif !(moves.include?(0))
+      puts "!!! TIE !!!"
+      return true 
+    end
+    false
   end
 
   def play_again?
