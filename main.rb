@@ -49,20 +49,19 @@ class Board
     puts self
     if player.win?
       puts "!!! #{player.sym} won."
-      return true
-    elsif !(moves.include?(nil))
-      puts "!!! TIE !!!"
-      return true 
+      true
+    elsif !moves.include?(nil)
+      puts '!!! TIE !!!'
+      true
     end
-    false
   end
 
   def play_again?
     p 'Do you want to play again? (Y/N): '
-    if gets.chomp.upcase == 'Y'
-      setup
-      play
-    end
+    return unless gets.chomp.upcase == 'Y'
+    
+    setup
+    play
   end
 
   def setup
@@ -104,6 +103,7 @@ class Player
   end
 
   private
+
   def valid_posn(posn)
     if !posn.between?(1, 9)
       puts 'Try again please input a number between 1 and 9.'
