@@ -37,13 +37,20 @@ class Board
   def play
     display_start
     loop do
-      posn = p1.ask
-      moves[posn - 1] = p1.sym
-      puts self
+      round(p1)
+      round(p2)
       break puts "!!! #{p1.sym} won." if p1.win?
       break puts "!!! #{p2.sym} won." if p2.win? 
     end
     play_again?
+  end
+
+  private
+
+  def round(player)
+    posn = player.ask
+    moves[posn - 1] = player.sym
+    puts self
   end
 
   def play_again?
@@ -54,12 +61,11 @@ class Board
     end
   end
 
-  private
   def setup
     self.moves = Array.new(9, 0)
     self.p1 = Player.new('X', self)
-    self.p2 = Player.new('O', self)
-  end 
+    self.p2 = Player.new('W', self)
+  end
 
   def display_start
     for i in (1..9)
@@ -103,7 +109,7 @@ class Player
     false
   end
 
-  private 
+  private
   def valid_posn(posn)
     if !posn.between?(1, 9)
       puts 'Try again please input a number between 1 and 9.'
