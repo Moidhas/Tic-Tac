@@ -24,18 +24,16 @@ class Board
 
   def to_s
     index = 0
-    moves.reduce('') do |acc, item|
+    moves.reduce("\n") do |acc, item|
       index += 1
-      if (index % 3).zero?
-        acc + "| #{item} | \n"
-      else
-        acc + "| #{item} |"
-      end
+      acc += item ? "| #{item} |" : "| #{index} |"
+      char_end = (index % 3).zero? ? "\n" : ''
+      acc + char_end
     end
   end
 
   def play
-    display_start
+    puts self
     loop do
       break if round(p1)
       break if round(p2)
@@ -52,7 +50,7 @@ class Board
     if player.win?
       puts "!!! #{player.sym} won."
       return true
-    elsif !(moves.include?(0))
+    elsif !(moves.include?(nil))
       puts "!!! TIE !!!"
       return true 
     end
@@ -68,19 +66,9 @@ class Board
   end
 
   def setup
-    self.moves = Array.new(9, 0)
+    self.moves = Array.new(9)
     self.p1 = Player.new('X', self)
     self.p2 = Player.new('W', self)
-  end
-
-  def display_start
-    for i in (1..9)
-      if (i % 3).zero?
-        puts "| #{i} |" 
-      else
-        print "| #{i} |"
-      end
-    end
   end
 end
 
@@ -101,7 +89,7 @@ class Player
 
   def ask
     loop do
-      print "#{sym}, input a number (1 - 9): "
+      print "\n#{sym}, input a number (1 - 9): "
       posn = input_move
       if valid_posn(posn)
         positions.push(posn)
@@ -120,7 +108,7 @@ class Player
     if !posn.between?(1, 9)
       puts 'Try again please input a number between 1 and 9.'
       return false
-    elsif board.moves[posn - 1] != 0
+    elsif board.moves[posn - 1]
       puts 'The position has already been chosen, Try again.'
       return false
     end
