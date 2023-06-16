@@ -25,25 +25,24 @@ class Board
   end
 
   def to_s
-    index = 1
-    moves.reduce(' ') do |acc, item|
+    index = 0
+    moves.reduce('') do |acc, item|
+      index += 1
       if (index % 3).zero?
         acc + "| #{item} | \n"
       else
         acc + "| #{item} |"
       end
-      index += 1
-      acc
     end
   end
 
   def play
     display_start
     loop do
-     posn = p1.ask
-     moves[posn - 1] = p1.sym
-     puts self
-     break if p1.win? || p2.win?
+      posn = p1.ask
+      moves[posn - 1] = p1.sym
+      puts self
+      break if p1.win? || p2.win?
     end
   end
 
@@ -57,7 +56,6 @@ class Board
       end
     end
   end
-
 end
 
 # Player
@@ -80,7 +78,7 @@ class Player
       print "#{sym}, input a number (1 - 9): "
       posn = input_move
       if valid_posn(posn)
-        positions.push(posn) 
+        positions.push(posn)
         break posn
       end
     end
@@ -94,7 +92,7 @@ class Player
   def valid_posn(posn)
     if !posn.between?(1, 9)
       puts 'Try again please input a number between 1 and 9.'
-      return false 
+      return false
     elsif positions.include?(posn)
       puts 'The position has already been chosen, Try again.'
       return false
