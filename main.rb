@@ -57,7 +57,7 @@ class Board
   end
 
   def play_again?
-    p 'Do you want to play again? (Y/N): '
+    puts 'Do you want to play again? (Y/N): '
     return unless gets.chomp.upcase == 'Y'
     
     setup
