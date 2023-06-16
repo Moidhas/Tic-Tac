@@ -38,8 +38,8 @@ class Board
     display_start
     loop do
       round(p1)
-      round(p2)
       break puts "!!! #{p1.sym} won." if p1.win?
+      round(p2)
       break puts "!!! #{p2.sym} won." if p2.win? 
     end
     play_again?
@@ -114,7 +114,7 @@ class Player
     if !posn.between?(1, 9)
       puts 'Try again please input a number between 1 and 9.'
       return false
-    elsif positions.include?(posn)
+    elsif board.moves[posn - 1] != 0
       puts 'The position has already been chosen, Try again.'
       return false
     end
